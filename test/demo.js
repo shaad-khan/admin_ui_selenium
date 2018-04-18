@@ -8,7 +8,7 @@ const expect = require('chai').expect;
 var _ = require('lodash');
 const argv = require('yargs').argv;
 var request = require("request");
-var encodedPat = encodePat('72cwherppis2lgz5gjcrahj6bunq5g5fhfdslkawzy6ie2lk24wa');
+//var encodedPat = encodePat('72cwherppis2lgz5gjcrahj6bunq5g5fhfdslkawzy6ie2lk24wa');
 var decode = require('unescape');
 var _ = require('lodash');
 
@@ -113,7 +113,7 @@ arr=arr.replace(/\n/g, ",");
  var id=await createrun().then((e)=>{
   return e;
  });
- console.log(id);
+ //console.log(id);
  await upload(id);
  try{
    if(argv.type=="Partner")
@@ -205,9 +205,9 @@ async function success(id)
   //var encodedPat = encodePat('72cwherppis2lgz5gjcrahj6bunq5g5fhfdslkawzy6ie2lk24wa');
 
 var d = new Date();
-console.log("here");
+//console.log("here");
     return await new Promise(function(resolve,reject){
-      console.log("inside success");
+  //    console.log("inside success");
       var options = {
          method: 'POST',
          headers: { 'cache-control': 'no-cache', 'authorization': `Basic ${encodedPat}`,'Content-Type': 'application/json'},
@@ -229,7 +229,7 @@ console.log("here");
       };
 
   request(options, function (error, response, body) {
-console.log("inside request");
+//console.log("inside request");
     if(error)
     {
       console.log(error);
@@ -250,7 +250,7 @@ async function failed(id,e)
   //var encodedPat = encodePat('72cwherppis2lgz5gjcrahj6bunq5g5fhfdslkawzy6ie2lk24wa');
 
 var d = new Date();
-console.log("here");
+//console.log("here");
     return await new Promise(function(resolve,reject){
       console.log("inside success");
       var options = {
@@ -274,7 +274,7 @@ console.log("here");
       };
 
   request(options, function (error, response, body) {
-console.log("inside request");
+//console.log("inside request");
     if(error)
     {
       console.log(error);
