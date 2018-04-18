@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="24.831" tests="1" failures="1">
+  <testsuite name="Root Suite" timestamp="2018-04-17T12:03:38" tests="0" failures="0" time="0">
+  </testsuite>
+  <testsuite name="Admin Ui Testing" timestamp="2018-04-17T12:03:38" tests="1" file="C:\Users\shadab.khan\Documents\GitHub\node_selenium_test\test\demo.js" failures="1" time="24.831">
+    <testcase name="Admin Ui Testing Test For List elements for partner" time="24.831" classname="Test For List elements for partner">
+      <failure><![CDATA[AssertionError: expected [ Array(1) ] to equal [ 'Site', 'Group', 'Organization' ]
+    at elem.getText.then (test\demo.js:82:34)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>
