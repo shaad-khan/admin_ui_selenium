@@ -28,6 +28,7 @@ describe('Admin Ui Testing', function() {
 
   before(async function example() {
   driver = await new Builder().forBrowser('chrome').build();
+  await driver.manage().window().maximize();
   await driver.get('https://admin.qa.atrius-iot.com/');
   await sleep(3000);
   await driver.findElement(By.name('loginfmt')).sendKeys(argv.email);
@@ -135,7 +136,11 @@ else if(argv.type=="Organization")
 }
 catch(e)
 {
-  await failed(id,e.message);
+  var bid=await req(e).then((d)=>{
+   return d;
+  });
+  //console.log("bid value"+bid);
+  await failed(id,e.message,bid);
   await update(id);
   await update(id);
 done(e);
@@ -245,14 +250,14 @@ var d = new Date();
 
 
 }
-async function failed(id,e)
+async function failed(id,e,bid)
 {
   //var encodedPat = encodePat('72cwherppis2lgz5gjcrahj6bunq5g5fhfdslkawzy6ie2lk24wa');
 
 var d = new Date();
 //console.log("here");
     return await new Promise(function(resolve,reject){
-      console.log("inside success");
+      //console.log("inside success");
       var options = {
          method: 'POST',
          headers: { 'cache-control': 'no-cache', 'authorization': `Basic ${encodedPat}`,'Content-Type': 'application/json'},
@@ -266,9 +271,15 @@ var d = new Date();
       "id": argv.pointid
       },
 
+
+
       "priority": 2,
       "outcome": "Failed",
-      "errorMessage": `${e} failed for ${argv.email}`
+      "errorMessage": `${e} failed for ${argv.email}`,
+      "associatedBugs":
+      {
+        "id": `${bid}`
+      }
       }],
         json:true
       };
@@ -361,28 +372,39 @@ async  function upload(id)
 
 
 }
-function req(x)
+async function req(e)
 {
-var encodedPat = encodePat('ptespah6ggnrwlsofomzxjlq4v6yzv6uubu6qmt4zuaolrwzx4na');
-
+//var encodedPat = encodePat('ptespah6ggnrwlsofomzxjlq4v6yzv6uubu6qmt4zuaolrwzx4na');
+return await new Promise(function(resolve,reject){
   var options = {
      method: 'PATCH',
      headers: { 'cache-control': 'no-cache', 'authorization': `Basic ${encodedPat}`,'Content-Type': 'application/json-patch+json'},
     // url: "https://testshaad.visualstudio.com/defaultcollection/nodetest/_apis/wit/workitems/$Bug?api-version=1.0",
-url: "https://ablcode.visualstudio.com/QualityAssurance/_apis/wit/workitems/$Bug?api-version=1.0",
+url: "https://ablcode.visualstudio.com/QualityAssurance/_apis/wit/workitems/$Bug?api-version=4.1-preview",
      body:  [{
       "op": "add",
       "path": "/fields/System.Title",
-      "value": x,
+      "value": `${e} failed for ${argv.email}`,
     }],
     json:true
   };
 
   request(options, function (error, response, body) {
-    if (error) throw new Error(error);
 
-    console.log(body._links.html.href);
-  });
+    if(error)
+    {
+      console.log(error);
+      reject(error);
+    }
+    else{
+      console.log("-----------------BUG CREATED BELOW IS THE URL---------------------------")
+      console.log(`https://ablcode.visualstudio.com/QualityAssurance/_workitems/edit/${body.id}`);
+      console.log("--------------------------------------------------------------------------------");
+      resolve(body.id);
+    }
+  })
+
+});
 }
 function encodePat(pat) {
    var b = new Buffer(':' + pat);
